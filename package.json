@@ -1,0 +1,55 @@
+{
+  "name": "convert-sc-design-hblab",
+  "version": "0.3.0",
+  "description": "CLI installer package for the convert-sc-design-hblab skill.",
+  "author": "duongvm <duongvm57@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duongvm57/convert-sc-design-hblab-skill.git"
+  },
+  "homepage": "https://github.com/duongvm57/convert-sc-design-hblab-skill#readme",
+  "bugs": {
+    "url": "https://github.com/duongvm57/convert-sc-design-hblab-skill/issues"
+  },
+  "skills": {
+    "name": "convert-sc-design-hblab",
+    "description": "Reads Google Sheets and converts the result into markdown-ready data for agents.",
+    "tags": [
+      "google-sheets",
+      "claude",
+      "cursor",
+      "codex",
+      "antigravity",
+      "opencode"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "skill",
+    "google-sheets",
+    "claude-code",
+    "cursor",
+    "codex",
+    "antigravity",
+    "opencode"
+  ],
+  "bin": {
+    "convert-sc-design-hblab": "./bin/google-sheet-reader.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "skills"
+  ],
+  "scripts": {
+    "test": "node --test && python3 -B -m unittest discover -s test -p '*_test.py'",
+    "release:check": "npm test && npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
