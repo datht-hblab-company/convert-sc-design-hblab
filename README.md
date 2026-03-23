@@ -1,88 +1,74 @@
 # convert-sc-design-hblab
 
-`convert-sc-design-hblab` works in two modes:
+`convert-sc-design-hblab` là skill dạng repo, tương thích với `skills.sh`.
 
-- As an npm CLI installer for supported agent skill directories
-- As a repo-based skill layout compatible with `skills.sh`
+## Bắt đầu nhanh
 
-## Quick Start
+Repo này hiện đã bao gồm cấu trúc tương thích `skills.sh` tại `skills/convert-sc-design-hblab/`.
 
-This repo now includes a `skills.sh`-compatible layout under `skills/convert-sc-design-hblab/`.
-
-Once the repo is public, users can install it with the Vercel CLI flow:
+Khi repo được public, có thể cài đặt bằng luồng CLI của Vercel:
 
 ```bash
 npx skills add https://github.com/datht-hblab-company/convert-sc-design-hblab --skill convert-sc-design-hblab
 ```
 
-That path is intended for the Vercel `skills.sh` ecosystem. The npm package remains useful when you want a dedicated installer CLI with explicit global or project-local targets.
+Cách cài này dành cho hệ sinh thái `skills.sh` của Vercel.
 
-When the installed skill is used, the script runs from the skill directory but any generated markdown should be written into `./docs` of the current workspace.
-If `./docs` does not exist, create it before writing files.
+Khi skill được sử dụng, nó có thể đọc Google Sheets URL, tự tách `gid`, rồi convert đúng sheet tương ứng. Mọi file markdown được tạo ra nên được ghi vào thư mục `./docs` của workspace hiện tại.
 
-The default `install` flow is interactive. It prompts for:
+## Ví dụ prompt cho skill `convert-sc-design-hblab`
 
-- One or more tools: `Claude Code`, `Cursor`, `Codex`, `Antigravity`
-- One or both install targets: `Global`, `Project-local`
+Có thể hướng dẫn agent bằng prompt như sau khi muốn viết lại nội dung từ Google Sheet vào một file markdown duy nhất. Vì skill hỗ trợ tự đọc `gid` từ URL, nên trong nhiều trường hợp không cần chỉ định tên sheet riêng nếu link đã trỏ đúng tab cần lấy:
 
-Interactive controls:
-
-- `Space` to toggle a checkbox
-- `↑` / `↓` to move
-- `←` to go back
-- `→` or `Enter` to continue
-
-For CI or scripts, you can still run non-interactive commands:
-
-```bash
-convert-sc-design-hblab install --tool codex --location project-local
+```text
+Dùng skill convert-sc-design-hblab đọc nội dung trong link Google Sheet này. Không tóm tắt hoặc lược bỏ nội dung.
+Gộp toàn bộ nội dung reference vào cùng 1 file markdown trong thư mục ./docs.
 ```
 
-## Supported tools
+## Ví dụ với link cụ thể
 
-| Tool        | Global path                                   | Project-local path               |
-| ----------- | --------------------------------------------- | -------------------------------- |
-| Claude Code | `~/.claude/skills/convert-sc-design-hblab`                  | `./.claude/skills/convert-sc-design-hblab`     |
-| Cursor      | `~/.cursor/skills/convert-sc-design-hblab`                  | `./.cursor/skills/convert-sc-design-hblab`     |
-| Codex       | `~/.codex/skills/convert-sc-design-hblab`                   | `./.codex/skills/convert-sc-design-hblab`      |
-| Antigravity | `~/.agent/skills/convert-sc-design-hblab`                   | `./.agent/skills/convert-sc-design-hblab`      |
-| OpenCode    | `~/.config/opencode/skills/convert-sc-design-hblab`         | `./.opencode/skills/convert-sc-design-hblab`   |
+```text
+Dùng skill convert-sc-design-hblab đọc nội dung trong link này:
+https://docs.google.com/spreadsheets/d/<SPREADSHEET_ID>/edit#gid=<GID>
 
-For Antigravity global installs, the CLI can prefer `~/.gemini/antigravity/skills/convert-sc-design-hblab` when that environment already exists.
-
-## CLI
-
-```bash
-convert-sc-design-hblab install
-convert-sc-design-hblab install --tool <name|all> --location <global|project-local> [--project-path <dir>] [--dest <dir>]
+Yêu cầu:
+- Tự đọc `gid` từ link và convert đúng sheet đang được mở trong URL
+- Đọc luôn các sheet được reference trong sheet này
+- Đưa toàn bộ nội dung reference vào trong cùng 1 file
+- Xuất kết quả ra file `./docs/sm-preview-site-recruitment-lp.md`
+- Không tóm tắt hoặc lược bỏ nội dung
 ```
 
-### Options
+## Công cụ được hỗ trợ
 
-- `--tool`: `claude-code`, `claude`, `cursor`, `codex`, `antigravity`, `opencode`, or `all`
-- `--location`: `global`, `project-local`, `project`, or `local`
-- `--dest`: override the resolved install directory completely
+| Công cụ      | Đường dẫn global                               | Đường dẫn project-local          |
+| ------------ | ---------------------------------------------- | -------------------------------- |
+| Claude Code  | `~/.claude/skills/convert-sc-design-hblab`     | `./.claude/skills/convert-sc-design-hblab` |
+| Cursor       | `~/.cursor/skills/convert-sc-design-hblab`     | `./.cursor/skills/convert-sc-design-hblab` |
+| Codex        | `~/.codex/skills/convert-sc-design-hblab`      | `./.codex/skills/convert-sc-design-hblab` |
+| Antigravity  | `~/.agent/skills/convert-sc-design-hblab`      | `./.agent/skills/convert-sc-design-hblab` |
+| OpenCode     | `~/.config/opencode/skills/convert-sc-design-hblab` | `./.opencode/skills/convert-sc-design-hblab` |
 
-## What gets installed
+## Thành phần được cài đặt
 
-The package installs only the skill assets:
+Skill này chỉ cài các tài nguyên cần thiết sau:
 
 - `SKILL.md`
 - `scripts/read_sheet.py`
 
-Those assets are sourced from `skills/convert-sc-design-hblab/` inside this repo.
+Các tài nguyên này được lấy từ `skills/convert-sc-design-hblab/` trong repo.
 
-The repository skill also includes:
+Ngoài ra, skill trong repo còn bao gồm:
 
 - `docs/troubleshooting.md`
 - `examples/read-sheet-json.sh`
 - `examples/read-sheet-table.sh`
 
-## Output Location
+## Vị trí xuất file
 
-The installed skill directory is only for packaged assets. Sheet output belongs in `./docs` of the current workspace.
+Thư mục cài skill chỉ dùng để chứa tài nguyên đóng gói. Kết quả đọc sheet phải được xuất vào `./docs` của workspace hiện tại.
 
-Example:
+Ví dụ:
 
 ```bash
 mkdir -p ./docs
@@ -93,36 +79,15 @@ python3 <skill-dir>/scripts/read_sheet.py \
   --output ./docs/<sheet-name>.md
 ```
 
-Use `--sheet-name` when you want to target a tab by title. Use `--gid` when you already have the Google Sheets tab id from a URL such as `.../edit?gid=123#gid=123`. If both are provided, `--gid` wins.
+Dùng `--sheet-name` khi muốn chỉ định tab theo tên. Dùng `--gid` khi đã biết Google Sheets tab id từ URL như `.../edit?gid=123#gid=123`. Nếu agent nhận được đầy đủ Google Sheets URL thì nó nên tự đọc `gid` từ URL đó và convert trực tiếp sheet tương ứng. Nếu truyền cả hai thì `--gid` sẽ được ưu tiên.
 
-The script always returns the full selected sheet in the requested format. It does not summarize, sample, or truncate output by default.
+Script luôn trả về toàn bộ nội dung của sheet đã chọn theo đúng định dạng yêu cầu. Mặc định, nó không tóm tắt, không lấy mẫu, và không cắt bớt nội dung.
 
-## Development
+## Lưu ý khi sử dụng
 
-```bash
-npm test
-```
-
-## Release
-
-Run the release smoke check before publishing:
-
-```bash
-npm run release:check
-```
-
-That command runs:
-
-```bash
-npm test
-npm pack --dry-run
-```
-
-To publish publicly on npm:
-
-```bash
-npm login
-npm publish --access public
-```
-
-If you later host this package in a public git repository, add `repository`, `homepage`, and `bugs` fields in `package.json` to match that repo.
+- Cung cấp đầy đủ Google Sheets URL để agent có thể lấy `spreadsheet id` và tự đọc `gid` của sheet cần convert.
+- Nếu URL đã mở đúng tab cần lấy thì có thể không cần ghi thêm tên sheet; `gid` trong URL là đủ để xác định sheet mục tiêu.
+- Chỉ cần ghi tên sheet khi muốn nhấn mạnh lại tab mục tiêu hoặc khi link không thể hiện rõ tab cần xử lý.
+- Nêu rõ rằng các sheet được reference cũng phải được đọc và nội dung của chúng phải được gộp trực tiếp vào file kết quả, thay vì để thành tham chiếu riêng.
+- Yêu cầu xuất ra một file duy nhất trong `./docs`, ví dụ `./docs/sm-preview-site-recruitment-lp.md`.
+- Nếu spreadsheet có nhiều tab liên quan, cần nói rõ là phải giữ nguyên toàn bộ nội dung nguồn và không được tóm tắt, trừ khi có yêu cầu khác.
